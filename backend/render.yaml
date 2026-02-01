@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: trivia-game-backend
+    runtime: node
+    region: oregon
+    plan: free
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: ALLOWED_ORIGINS
+        value: capacitor://localhost,ionic://localhost,https://localhost,https://yourdomain.com
+      - key: INITIAL_FREE_GAMES
+        value: 3
+      - key: RATE_LIMIT_MAX
+        value: 100
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
