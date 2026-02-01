@@ -18,7 +18,56 @@ import {userService, UserGameData} from '../services/backendService';
 import {categoriesService} from '../services/backendService';
 import {translations} from '../translations';
 import {Colors, Spacing, FontSize, BorderRadius} from '../theme/colors';
-import {Category, Player} from '../types';
+import {Category, Player, Question} from '../types';
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+/** Pick n random elements from an array (Fisher-Yates) */
+function pickN<T>(arr: T[], n: number): T[] {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, n);
+}
+
+/**
+ * For each category, pick 2 questions at 200, 2 at 400, 2 at 600 points.
+ * If a category doesn't have enough questions per tier, fall back to
+ * picking 6 random questions and assigning points by position.
+ */
+function buildRandomGameBoardCategories(source: Category[]): Category[] {
+  return source.map(cat => {
+    const resetQs = cat.questions.map(q => ({...q, isSolved: false}));
+
+    const q200 = resetQs.filter(q => q.points === 200);
+    const q400 = resetQs.filter(q => q.points === 400);
+    const q600 = resetQs.filter(q => q.points === 600);
+
+    let chosen: Question[];
+    if (q200.length >= 2 && q400.length >= 2 && q600.length >= 2) {
+      chosen = [
+        ...pickN(q200, 2),
+        ...pickN(q400, 2),
+        ...pickN(q600, 2),
+      ];
+    } else {
+      // Fallback: pick 6 random questions and assign points by position
+      chosen = pickN(resetQs, 6).map((q, i) => ({
+        ...q,
+        points: i < 2 ? 200 : i < 4 ? 400 : 600,
+      }));
+    }
+
+    return {
+      ...cat,
+      questions: chosen,
+    };
+  });
+}
 
 // ---------------------------------------------------------------------------
 // Types
@@ -323,8 +372,8 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     }
     if (selectedCategoryIds.length !== MAX_CATEGORIES) return;
 
-    const selectedCats = categories.filter(c =>
-      selectedCategoryIds.includes(c.id),
+    const selectedCats = buildRandomGameBoardCategories(
+      categories.filter(c => selectedCategoryIds.includes(c.id)),
     );
 
     const players: Player[] = [

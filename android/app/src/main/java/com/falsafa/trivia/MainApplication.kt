@@ -1,4 +1,4 @@
-package com.sejaltrivia
+package com.falsafa.trivia
 
 import android.app.Application
 import com.facebook.react.PackageList

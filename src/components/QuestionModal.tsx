@@ -51,6 +51,18 @@ const QuestionModal: React.FC<QuestionModalProps> = ({
   const currentTeamName = currentPlayer.name;
   const correctAnswer = question.options[question.correctIndex];
 
+  // Debug: log question data to verify text field
+  useEffect(() => {
+    console.log('QuestionModal question:', JSON.stringify({
+      id: question.id,
+      text: question.text,
+      hasText: !!question.text,
+      textLength: question.text?.length,
+      points: question.points,
+      optionsCount: question.options?.length,
+    }));
+  }, [question]);
+
   const canUsePit =
     !currentPlayer.perksUsed.the_pit && solvedQuestionsCount >= 4;
 
@@ -413,14 +425,13 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(2, 6, 23, 0.92)',
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 12,
   },
   modalContainer: {
+    flex: 1,
     width: '100%',
     maxWidth: 700,
-    maxHeight: '95%',
+    alignSelf: 'center',
     borderRadius: 24,
     overflow: 'hidden',
     backgroundColor: 'rgba(30, 41, 59, 0.97)',

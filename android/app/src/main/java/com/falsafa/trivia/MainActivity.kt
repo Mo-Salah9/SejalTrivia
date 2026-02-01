@@ -1,4 +1,4 @@
-package com.sejaltrivia
+package com.falsafa.trivia
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
