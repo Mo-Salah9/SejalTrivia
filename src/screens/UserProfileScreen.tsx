@@ -7,7 +7,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
+import * as Clipboard from 'expo-clipboard';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigation/types';
 import {useAuth} from '../contexts/AuthContext';
@@ -45,10 +45,10 @@ const UserProfileScreen: React.FC<Props> = ({navigation}) => {
     }
   };
 
-  const handleCopyUid = () => {
+  const handleCopyUid = async () => {
     if (user?.uid) {
-      Clipboard.setString(user.uid);
-      Alert.alert(t.copied || 'تم النسخ', 'UID copied to clipboard');
+      await Clipboard.setStringAsync(user.uid);
+      Alert.alert((t as any).copied || 'تم النسخ', 'UID copied to clipboard');
     }
   };
 

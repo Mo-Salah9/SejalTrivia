@@ -1,6 +1,6 @@
-import Config from 'react-native-config';
+import Constants from 'expo-constants';
 
-const apiKey = Config.GEMINI_API_KEY;
+const apiKey = Constants.expoConfig?.extra?.GEMINI_API_KEY;
 
 export const generateNewQuestions = async (categoryName: string) => {
   if (!apiKey) {

@@ -202,7 +202,7 @@ export const authService = {
   },
 
   /**
-   * Sign in with Apple using @invertase/react-native-apple-authentication
+   * Sign in with Apple using expo-apple-authentication
    */
   async signInWithApple(): Promise<AuthUser> {
     if (Platform.OS !== 'ios') {
@@ -212,16 +212,16 @@ export const authService = {
     try {
       console.log('Starting Apple Sign-In...');
 
-      const {appleAuth} = await import(
-        '@invertase/react-native-apple-authentication'
-      );
+      const AppleAuthentication = await import('expo-apple-authentication');
 
-      const appleAuthRequestResponse = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+        ],
       });
 
-      const identityToken = appleAuthRequestResponse.identityToken;
+      const identityToken = credential.identityToken;
       if (!identityToken) {
         throw new Error('No identity token received from Apple Sign-In');
       }
@@ -232,9 +232,9 @@ export const authService = {
       }>('/auth/apple', {
         identityToken,
         user: {
-          email: appleAuthRequestResponse.email,
-          givenName: appleAuthRequestResponse.fullName?.givenName,
-          familyName: appleAuthRequestResponse.fullName?.familyName,
+          email: credential.email,
+          givenName: credential.fullName?.givenName,
+          familyName: credential.fullName?.familyName,
         },
       });
 
@@ -243,6 +243,7 @@ export const authService = {
     } catch (error: any) {
       console.error('Apple Sign-In error:', error);
       if (
+        error.code === 'ERR_REQUEST_CANCELED' ||
         error.message?.includes('canceled') ||
         error.message?.includes('cancelled')
       ) {

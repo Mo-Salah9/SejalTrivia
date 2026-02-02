@@ -3,10 +3,10 @@
  * Handles all HTTP requests to the backend API
  */
 
-import Config from 'react-native-config';
+import Constants from 'expo-constants';
 import { storage } from '../utils/storage';
 
-const API_BASE_URL = Config.API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || 'http://localhost:3000/api';
 
 class ApiService {
   private token: string | null = null;
