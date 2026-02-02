@@ -43,6 +43,7 @@ module.exports = ({config}) => ({
     'react-native-iap',
     'expo-apple-authentication',
     'expo-screen-orientation',
+    './plugins/withDisableLint',
   ],
   extra: {
     eas: {
