@@ -12,6 +12,7 @@ import {
   I18nManager,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {RootStackParamList} from '../navigation/types';
 import {useAuth} from '../contexts/AuthContext';
 import {userService, UserGameData} from '../services/backendService';
@@ -242,6 +243,7 @@ const getCategoryVisual = (
 
 const HomeScreen: React.FC<Props> = ({navigation}) => {
   const {user} = useAuth();
+  const insets = useSafeAreaInsets();
   const t = translations.ar; // Default Arabic
   const isArabic = I18nManager.isRTL || true; // default RTL
 
@@ -406,7 +408,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
   // ---- Render helpers -------------------------------------------------------
 
   const renderHeader = () => (
-    <View style={styles.header}>
+    <View style={[styles.header, {paddingTop: insets.top + 12}]}>
       {/* Games Remaining */}
       <View style={styles.headerLeft}>
         <View style={styles.gamesIcon}>
@@ -574,7 +576,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
         )}
 
         {/* Fixed Footer */}
-        <View style={styles.footer}>
+        <View style={[styles.footer, {paddingBottom: insets.bottom + 16}]}>
           {!canPlay && !isLoading ? (
             <TouchableOpacity
               style={styles.buyGamesBtn}

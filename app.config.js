@@ -5,6 +5,7 @@ module.exports = ({config}) => ({
   ...config,
   name: 'سجال | Sejal',
   slug: 'sejal-trivia',
+  owner: 'mo-salah9',
   version: '2.5',
   orientation: 'default',
   userInterfaceStyle: 'dark',
@@ -12,8 +13,8 @@ module.exports = ({config}) => ({
   newArchEnabled: true,
   ios: {
     bundleIdentifier: 'com.falsafa.trivia',
-    buildNumber: '9',
-    supportsTablet: false,
+    buildNumber: '11',
+    supportsTablet: true,
     infoPlist: {
       UIViewControllerBasedStatusBarAppearance: false,
       UISupportedInterfaceOrientations: [
@@ -47,7 +48,7 @@ module.exports = ({config}) => ({
   ],
   extra: {
     eas: {
-      projectId: undefined, // Set after running `eas init`
+      projectId: 'fdd28800-55e1-4561-8ee1-bd7f662f8880',
     },
     API_BASE_URL:
       process.env.API_BASE_URL ||

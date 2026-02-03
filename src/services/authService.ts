@@ -171,6 +171,8 @@ export const authService = {
       GoogleSignin.configure({
         webClientId:
           '732862624643-3fhlnic3b60b0mara1tbv7klf9978hrn.apps.googleusercontent.com',
+        iosClientId:
+          '732862624643-b2kk4bi105kmfn4ubecu6k6687e3b37n.apps.googleusercontent.com',
         offlineAccess: true,
       });
 

@@ -8,6 +8,7 @@ import {
   Animated,
   I18nManager,
 } from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigation/types';
 import {useAuth} from '../contexts/AuthContext';
@@ -19,6 +20,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Landing'>;
 
 const LandingScreen: React.FC<Props> = ({navigation}) => {
   const {user, isAdmin} = useAuth();
+  const insets = useSafeAreaInsets();
   const t = translations.ar; // Default to Arabic
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -39,7 +41,7 @@ const LandingScreen: React.FC<Props> = ({navigation}) => {
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={styles.contentContainer}>
+      contentContainerStyle={[styles.contentContainer, {paddingTop: insets.top + 20, paddingBottom: insets.bottom + 40}]}>
       <Animated.View style={[styles.content, {opacity: fadeAnim}]}>
         {/* Header */}
         <View style={styles.header}>

@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Animated,
 } from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigation/types';
 import {translations} from '../translations';
@@ -15,6 +16,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'GameLoading'>;
 
 const GameLoadingScreen: React.FC<Props> = ({navigation, route}) => {
   const {players, categories} = route.params;
+  const insets = useSafeAreaInsets();
   const t = translations.ar;
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -33,7 +35,7 @@ const GameLoadingScreen: React.FC<Props> = ({navigation, route}) => {
   }, [navigation, players, categories, fadeAnim]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {paddingTop: insets.top, paddingBottom: insets.bottom, paddingLeft: insets.left, paddingRight: insets.right}]}>
       <Animated.View style={[styles.content, {opacity: fadeAnim}]}>
         <Text style={styles.emoji}>⚔️</Text>
         <ActivityIndicator size="large" color={Colors.orange500} style={styles.spinner} />

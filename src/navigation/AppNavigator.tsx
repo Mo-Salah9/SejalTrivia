@@ -41,7 +41,7 @@ const AppNavigator: React.FC = () => {
       <Stack.Screen
         name="GameLoading"
         component={GameLoadingScreen}
-        options={{gestureEnabled: false}}
+        options={{gestureEnabled: false, orientation: 'landscape'}}
       />
       <Stack.Screen
         name="Game"

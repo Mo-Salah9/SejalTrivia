@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigation/types';
 import {Player, Category, Question, PerkType} from '../types';
 import {translations} from '../translations';
 import {Colors} from '../theme/colors';
-import {lockToLandscape, unlockOrientation} from '../utils/screenOrientation';
 import {useAuth} from '../contexts/AuthContext';
 import {gameSessionsService} from '../services/backendService';
 import GameBoard from '../components/GameBoard';
@@ -17,6 +17,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Game'>;
 
 const GameScreen: React.FC<Props> = ({navigation, route}) => {
   const {user} = useAuth();
+  const insets = useSafeAreaInsets();
   const t = translations.ar;
   const initialPlayers = route.params.players;
   const initialCategories = route.params.categories;
@@ -30,12 +31,6 @@ const GameScreen: React.FC<Props> = ({navigation, route}) => {
   } | null>(null);
   const [pitNotificationShown, setPitNotificationShown] = useState(false);
   const [scoreAnimText, setScoreAnimText] = useState<string | null>(null);
-
-  // Lock to landscape
-  useEffect(() => {
-    lockToLandscape();
-    return () => unlockOrientation();
-  }, []);
 
   // Save game session
   useEffect(() => {
@@ -217,7 +212,7 @@ const GameScreen: React.FC<Props> = ({navigation, route}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {paddingTop: insets.top, paddingBottom: insets.bottom, paddingLeft: insets.left, paddingRight: insets.right}]}>
       {/* Header */}
       <View style={styles.header}>
         <Logo size="sm" />
